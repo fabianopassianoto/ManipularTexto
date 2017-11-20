@@ -148,9 +148,16 @@ object Form1: TForm1
       object MnStringList: TMemo
         Left = 2
         Top = 18
-        Width = 609
+        Width = 296
         Height = 195
         TabOrder = 0
+      end
+      object MnStringListWhile: TMemo
+        Left = 304
+        Top = 18
+        Width = 305
+        Height = 195
+        TabOrder = 1
       end
     end
     object TabSheet5: TTabSheet

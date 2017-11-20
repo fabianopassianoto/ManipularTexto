@@ -37,6 +37,7 @@ type
     MnStringStreamWhile: TMemo;
     BtnBench: TButton;
     MnTextFileWhile: TRichEdit;
+    MnStringListWhile: TMemo;
     procedure Button1Click(Sender: TObject);
     procedure BtTextFileTestClick(Sender: TObject);
     procedure BtFileStreamTestClick(Sender: TObject);
@@ -220,6 +221,7 @@ procedure TForm1.TestStringList(aDisplay: Boolean; aFileName: TFileName);
 var
   Ss: TStringList;
   Freq, Start, End_: int64;
+  i : Integer;
 begin
   QueryPerformanceFrequency(Freq);
   QueryPerformanceCounter(Start);
@@ -227,10 +229,24 @@ begin
   Ss.LoadFromFile(aFileName);
   if aDisplay then
     MnStringList.Text := Ss.Text;
-  Ss.Free;
-  QueryPerformanceCounter(End_);
-  Memo1.Text := Memo1.Text + #13#10 + ' StringList p/ LER ' + FloatToStr((End_ - Start) / Freq) + ' segundos.';
 
+  QueryPerformanceCounter(End_);
+  Memo1.Text := Memo1.Text + #13#10 + ' StringList p/ LER ' + FloatToStr((End_ - Start) / Freq) + ' s.';
+  Ss.Free;
+///////////////////////////////////////////////////////
+
+  Ss := TStringList.Create;
+  Ss.LoadFromFile(aFileName);
+  QueryPerformanceFrequency(Freq);
+  QueryPerformanceCounter(Start);
+  for i := 0 to Ss.Count - 1  do
+  begin
+    if aDisplay  then
+      MnStringListWhile.Lines.Add(Ss.Strings[i]);
+  end;
+  QueryPerformanceCounter(End_);
+  Memo1.Text := Memo1.Text + #13#10 + ' StringList p/ PERCORRER ' + FloatToStr((End_ - Start) / Freq) + ' s.';
+  Ss.Free;
 end;
 
 procedure TForm1.TestStringStream(aDisplay: Boolean; aFileName: TFileName);
@@ -287,6 +303,7 @@ begin
   AssignFile(F, aFileName);
   Reset(F);
   //TODO: CRIAR LEITURA COMPLETA
+  Read(F, Ln);
 
 
   //PERCORRER
